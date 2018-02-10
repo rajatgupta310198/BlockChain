@@ -1,0 +1,36 @@
+'''
+
+block.py
+Implementation of Class Block and its methods
+
+Author: Rajat Gupta
+Time & Date: 22:10 hrs, Sat, 10th Feb 2018
+Email: rajat15101@iiitnr.edu.in
+
+'''
+
+from datetime import datetime
+from hashlib import sha256
+
+
+class Block(object):
+    '''
+    Block class
+    Contains all attributes and methods for Block
+    '''
+    def __init__(self, time_stamp, data, prev_hash):
+
+        self.time_stamp = time_stamp
+        self.data = data 
+        self.prev_hash = prev_hash
+        self.hash = self.hash_block()
+
+
+    def hash_block(self):
+        '''
+        Hash current block
+        perform SHA256 Hash of block
+        '''
+        hashed = sha256(str(self.time_stamp) + str(self.data) + str(self.prev_hash))
+
+        return hashed
