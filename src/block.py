@@ -16,8 +16,15 @@ import warnings
 
 class Block(object):
     '''
+
     Block class
     Contains all attributes and methods for Block
+    data: This field is intended to be json/dictionary field containing custom data according to application
+    In our case it will contain-
+        -Voted to
+        -Vote time
+        (for voting application)
+
     '''
     def __init__(self, time_stamp, data, prev_hash):
         
