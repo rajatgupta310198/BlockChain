@@ -19,11 +19,13 @@ class Block(object):
     Contains all attributes and methods for Block
     '''
     def __init__(self, time_stamp, data, prev_hash):
-
+        
         self.time_stamp = time_stamp
         self.data = data 
         self.prev_hash = prev_hash
         self.hash = self.hash_block()
+        self.public_key = self.hash_block() # the key visible to all
+        self.user_key = self.hash_block()   # key only visible to authenticated user who created block of transaction
 
 
     def hash_block(self):
@@ -34,3 +36,4 @@ class Block(object):
         hashed = sha256(str(self.time_stamp) + str(self.data) + str(self.prev_hash))
 
         return hashed
+
