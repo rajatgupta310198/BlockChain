@@ -11,6 +11,7 @@ Email: rajat15101@iiitnr.edu.in
 
 from datetime import datetime
 from hashlib import sha256
+import warnings
 
 
 class Block(object):
@@ -37,3 +38,13 @@ class Block(object):
 
         return hashed
 
+    def get_data_of_block(self, user_key):
+
+        if user_key == self.user_key:
+            '''
+            Creater of this block
+            '''
+
+            return self.data
+        else:
+            return warnings.raise_invalid_user_key()
