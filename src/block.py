@@ -11,9 +11,7 @@ Time & Date: 22:10 hrs, Sat, 10th Feb 2018
 
 from datetime import datetime
 from hashlib import sha256
-import warnings
-
-MAX_TRANSACTIONS_PER_BLOCK = 5
+import warnings, constants
 
 class Block(object):
     '''
