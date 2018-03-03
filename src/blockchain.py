@@ -54,12 +54,12 @@ class Blockchain(object):
         '''
         First time block is added of our blockchain is initialized with genesis block
         '''
-        block_ = Block(str(datetime.now()), sha256(str(datetime.now()).encode()))
-        genesis_transcations = ['A', 'B', 'C', 'D', 'E']
+        block_ = Block(str(datetime.now()), sha256(str(datetime.now()).encode()).hexdigest())
+        genesis_transcations = ['A', 'B', 'C', 'D', 'E'] # Original trancations will be different
         for i in range(5):
             if(block_.add_transactions(genesis_transcations[i])==101):
-                print("Added transcation")
-        return
+                pass
+        return block_
         
 
 
@@ -82,4 +82,6 @@ class Blockchain(object):
 
 
     def print_block_chain(self):
-        pass 
+        for i in range(self.number_of_blocks):
+            print(self.blocks[i].get_hash(), self.blocks[i].get_transactions())
+        
