@@ -7,3 +7,7 @@ Time & Date: 11:28 hrs, Sat, 3rd March 2018
 
 
 MAX_TRANSACTIONS_PER_BLOCK = 5
+
+WARNING_CODE = 100
+
+SUCCESS_CODE = 101

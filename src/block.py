@@ -11,7 +11,8 @@ Time & Date: 22:10 hrs, Sat, 10th Feb 2018
 
 from datetime import datetime
 from hashlib import sha256
-import warnings, constants
+import warnings
+
 
 class Block(object):
     '''
@@ -27,11 +28,26 @@ class Block(object):
         self.time_stamp = time_stamp
         self.transactions = []
         self.prev_hash = prev_hash
-        self.hashblock = self.get_hashblock()
+        self.hashblock = None
 
     def get_hashblock(self):
 
-        return sha256(str(self.prev_hash) + str(self.time_stamp))
+        return sha256(str(self.prev_hash).encode() + str(self.time_stamp).encode() + str(self.transactions).encode())
   
+
+    def add_transactions(self, transaction):
+        if len(self.transactions) < 5:
+            self.transactions.append(transaction)
+            return 101
+        if len(self.transactions) == 5:
+            self.hashblock = self.get_hashblock()
+        else:
+            return 100
+
+
+
+
+            
+            
 
        
