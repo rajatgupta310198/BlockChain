@@ -32,17 +32,27 @@ class Block(object):
 
     def get_hashblock(self):
 
-        return sha256(str(self.prev_hash).encode() + str(self.time_stamp).encode() + str(self.transactions).encode())
+        return sha256(str(self.prev_hash).encode() + str(self.time_stamp).encode() + str(self.transactions).encode()).hexdigest()
   
 
     def add_transactions(self, transaction):
-        if len(self.transactions) < 5:
+        if len(self.transactions) <5:
             self.transactions.append(transaction)
-            return 101
+            #print("Added transcation", len(self.transactions))
+            
         if len(self.transactions) == 5:
+            #print('5th transaction added and ready to be added in blockchain')
             self.hashblock = self.get_hashblock()
+            return 101
         else:
+
             return 100
+
+    def get_hash(self):
+        return self.hashblock
+
+    def get_transactions(self):
+        return self.transactions
 
 
 
