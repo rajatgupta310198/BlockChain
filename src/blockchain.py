@@ -12,7 +12,7 @@ Time & Date: 17:32 hrs, Sat, 3trd March 2018
 import warnings
 
 from pyp2p import *
-#from transaction import *
+from .transaction import *
 from .block import Block
 from datetime import datetime
 from hashlib import sha256
@@ -46,7 +46,10 @@ class Blockchain(object):
 
 
     def return_genesis_block(self):
-        pass
+        '''
+        Return genesis block object
+        '''
+        return self.blocks[0]
 
 
 
@@ -56,13 +59,9 @@ class Blockchain(object):
         '''
         block_ = Block(str(datetime.now()), sha256(str(datetime.now()).encode()).hexdigest())
         genesis_transcations = ['A', 'B', 'C', 'D', 'E'] # Original trancations will be different
-        for i in range(5):
-            if(block_.add_transactions(genesis_transcations[i])==101):
-                pass
+        block_.add_transactions(genesis_transcations)
         return block_
         
-
-
 
 
     def lenght_of_chain(self):
@@ -75,13 +74,23 @@ class Blockchain(object):
 
 
     def add_block(self, block):
+        '''
+
+        This fucntion will be called when miner successfully verfies a block.
+
+        '''
+
         self.blocks.append(block)
         self.number_of_blocks +=1
+        #save chain after this locally and then distribute block
         return
 
 
 
     def print_block_chain(self):
         for i in range(self.number_of_blocks):
-            print(self.blocks[i].get_hash(), self.blocks[i].get_transactions())
+            print(self.blocks[i].get_hash())
+            l = self.blocks[i].get_transactions()
+            for t in l:
+                print(t)
         

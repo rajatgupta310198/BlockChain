@@ -20,13 +20,15 @@ class Block(object):
     Block class
     Contains all attributes and methods for Block
     data: This field is intended to be list field containing custom data according to application
-       
+    A block is created by miner, in our implementation it is created directly via blockchain class for only genesis block.
+    Genesis block is created when first time system is live.
 
     '''
     def __init__(self, time_stamp, prev_hash):
         
         self.time_stamp = time_stamp
-        self.transactions = []
+        self.transactions = None
+        self.block_number = None  # calculate when adding to block
         self.prev_hash = prev_hash
         self.hashblock = None
 
@@ -36,22 +38,21 @@ class Block(object):
   
 
     def add_transactions(self, transaction):
-        if len(self.transactions) <5:
-            self.transactions.append(transaction)
+        
+        self.transactions = transaction
             #print("Added transcation", len(self.transactions))
             
-        if len(self.transactions) == 5:
+        
             #print('5th transaction added and ready to be added in blockchain')
-            self.hashblock = self.get_hashblock()
-            return 101
-        else:
-
-            return 100
+        self.hashblock = self.get_hashblock()
+        return 101
+       
 
     def get_hash(self):
         return self.hashblock
 
     def get_transactions(self):
+
         return self.transactions
 
 
