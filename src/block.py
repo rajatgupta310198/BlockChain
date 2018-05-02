@@ -28,9 +28,10 @@ class Block(object):
         
         self.time_stamp = time_stamp
         self.transactions = None
-        self.block_number = None  # calculate when adding to block
+        self.block_number = None  # calculate when adding to block chain
         self.prev_hash = prev_hash
         self.hashblock = None
+        self.proof_of_work = None # added after verification
 
     def get_hashblock(self):
 
@@ -45,6 +46,7 @@ class Block(object):
         
             #print('5th transaction added and ready to be added in blockchain')
         self.hashblock = self.get_hashblock()
+        #call proof of work algorithm 
         return 101
        
 
