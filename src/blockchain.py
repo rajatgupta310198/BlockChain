@@ -52,7 +52,7 @@ class Blockchain(object):
         return self.blocks[0]
 
 
-
+    #@staticmethod
     def initialize_genesis(self):
         '''
         First time block is added of our blockchain is initialized with genesis block
@@ -92,5 +92,5 @@ class Blockchain(object):
             print(self.blocks[i].get_hash())
             l = self.blocks[i].get_transactions()
             for t in l:
-                print(t)
+                print(t, 'Digital Signature :', sha256(t.encode()).hexdigest())
         
