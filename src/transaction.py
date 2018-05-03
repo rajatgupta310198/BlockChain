@@ -31,6 +31,10 @@ class Transaction(object):
 
     def __str__(self):
 
-        return  str(self.to_) + ' ' + str(self.qty) + ' '+ str(self.timestamp)
+        return  'To : ' + str(self.to_) + ', Digital Signature :' +str(self.digital_signature)
+    
+    def get_who(self):
+
+        return self.from_
 
 

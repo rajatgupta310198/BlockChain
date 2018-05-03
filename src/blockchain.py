@@ -11,7 +11,7 @@ Time & Date: 17:32 hrs, Sat, 3trd March 2018
 
 import warnings
 
-from pyp2p import *
+#from pyp2p import *
 from .transaction import *
 from .block import Block
 from datetime import datetime
@@ -60,8 +60,22 @@ class Blockchain(object):
         block_ = Block(str(datetime.now()), sha256(str(datetime.now()).encode()).hexdigest())
         genesis_transcations = ['A', 'B', 'C', 'D', 'E'] # Original trancations will be different
         block_.add_transactions(genesis_transcations)
+        block_.hashblock = block_.get_hashblock()
         return block_
         
+
+    def is_voted(self, trans):
+        print('called')
+        
+        for i,block in enumerate(self.blocks):
+            if i!=0:
+                trans_ = block.get_transactions()
+                for t in trans_:
+                    print(t)
+                    if t.get_who() == trans.get_who():
+                        return True
+        return False
+
 
 
     def lenght_of_chain(self):
@@ -88,9 +102,14 @@ class Blockchain(object):
 
 
     def print_block_chain(self):
+        print('Blochain printing\n')
         for i in range(self.number_of_blocks):
+            print('Block Number:', i)
             print(self.blocks[i].get_hash())
+            print('Miner of this block :', self.blocks[i].get_miner())
             l = self.blocks[i].get_transactions()
+            print('Transactions :\n')
+            print('To,Digital Signature\n')
             for t in l:
-                print(t, 'Digital Signature :', sha256(t.encode()).hexdigest())
+                print(t)
         

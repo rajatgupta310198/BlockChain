@@ -7,7 +7,7 @@ import time, pickle
 
 
 public_list_of_peers = [
-    ("0.0.0.0", 10009, "active")
+    ["0.0.0.0", 10009, "active"]
 ]
 class User:
     def __init__(self, name, age, publickey, privatekey, candidate=False):
@@ -33,23 +33,32 @@ def register(sock):
         new_Transaction.timestamp = time.ctime()
         new_Transaction.digital_signature = sha256(to.encode() + user.privatekey.encode()).hexdigest()
         print(new_Transaction,'Digital Signature : ', new_Transaction.digital_signature)
+        return new_Transaction
+
     else:
         sock.close()
+        return False
 
         
-def connectToNetwork():
+def connectToNetwork(connections):
+    
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
     sock.connect(('0.0.0.0', 10009))
-    sock.send('wallet'.encode())
-    
-    register(sock)
+    sock.send('wallet'.encode()) 
+    trans = register(sock)
+    print(trans)
+    if trans:
+        data = sock.recv(1024)
+        public_list_of_peers = pickle.loads(data)
+        print(public_list_of_peers)
+        sock.send(pickle.dumps(trans))
+        sock.close()
 
-    data = sock.recv(1024)
-    public_list_of_peers = pickle.loads(data)
-    print(public_list_of_peers)
-
     
+
+
+#connectToNetwork()
     
         
 

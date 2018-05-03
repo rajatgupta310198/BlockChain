@@ -32,6 +32,7 @@ class Block(object):
         self.prev_hash = prev_hash
         self.hashblock = None
         self.proof_of_work = None # added after verification
+        self.miner = None
 
     def get_hashblock(self):
 
@@ -53,9 +54,21 @@ class Block(object):
     def get_hash(self):
         return self.hashblock
 
+    def get_proof_of_work(self):
+
+        return self.proof_of_work
+
     def get_transactions(self):
 
         return self.transactions
+
+    def get_miner(self):
+
+        return self.miner
+
+    def get_time_of_creation(self):
+
+        return self.time_stamp
 
 
 
