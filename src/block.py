@@ -74,8 +74,6 @@ class Block(object):
         return self.time_stamp
 
 
-
-
             
             
 

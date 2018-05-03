@@ -116,7 +116,7 @@ class Blockchain(object):
             print('Proof of Work :', self.blocks[i].get_proof_of_work())
             print('Miner of this block : ', self.blocks[i].get_miner())
             l = self.blocks[i].get_transactions()
-            print('Transactions :\n')
+            print('Transactions :')
             for i,t in enumerate(l):
                 print(i,t)
         

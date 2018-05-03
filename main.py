@@ -235,7 +235,7 @@ if __name__ =="__main__":
                 print('Listening for peers')
                 c, a = sock.accept()
                 connections.append(c)
-                print(os.getcwd())
+                #print(os.getcwd())
                 chain = read_from_local()
                 #chain.print_block_chain()
                 public_list_of_peers.append([a[0], a[1], "Active"])

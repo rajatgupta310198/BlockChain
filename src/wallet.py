@@ -10,6 +10,9 @@ public_list_of_peers = [
     ["172.16.102.38", 10009, "active"]
 ]
 class User:
+    '''
+    User class for registration
+    '''
     def __init__(self, name, age, publickey, privatekey, candidate=False):
         self.name = name 
         self.age = age
@@ -18,8 +21,10 @@ class User:
         self.privatekey = privatekey
 
 
-
 def register(sock, ca):
+    '''
+    Voting portal
+    '''
     global public_list_of_peers
     name = input("Enter Name")
     age = input("Enter age")
@@ -42,7 +47,10 @@ def register(sock, ca):
 
         
 def connectToNetwork(connections):
-    
+    '''
+    Wallet will need to connect to decentralized network
+
+    '''
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
     sock.connect(('172.16.102.38', 10009))
