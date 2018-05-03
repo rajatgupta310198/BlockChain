@@ -12,7 +12,7 @@ Time & Date: 22:10 hrs, Sat, 10th Feb 2018
 from datetime import datetime
 from hashlib import sha256
 import warnings
-
+from .transaction import Transaction
 
 class Block(object):
     '''
@@ -33,6 +33,7 @@ class Block(object):
         self.hashblock = None
         self.proof_of_work = None # added after verification
         self.miner = None
+        self.winner = None
 
     def get_hashblock(self):
 
@@ -42,10 +43,12 @@ class Block(object):
     def add_transactions(self, transaction):
         
         self.transactions = transaction
-            #print("Added transcation", len(self.transactions))
-            
+        #print("Added transcation", len(self.transactions))
+       
+    
         
-            #print('5th transaction added and ready to be added in blockchain')
+        
+        #print('5th transaction added and ready to be added in blockchain')
         self.hashblock = self.get_hashblock()
         #call proof of work algorithm 
         return 101

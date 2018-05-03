@@ -21,19 +21,28 @@ class Transaction(object):
     Transaction is 3rd part of project.
 
     '''
-    def __init__(self, to_, from_, qty=1):
+    def __init__(self, to_, from_, qty=1, name=None):
         self.to_ = to_
         self.from_ = from_
         self.qty = qty
         self.timestamp = str(datetime.now())
         self.digital_signature = None
+        self.name = name
 
 
     def __str__(self):
 
-        return  'To : ' + str(self.to_) + ', Digital Signature :' +str(self.digital_signature)
+        return  'Candidate : ' + str(self.name) + ', Digital Signature : ' +str(self.digital_signature)
     
     def get_who(self):
+
+        return self.from_
+    
+    def get_candidate(self):
+
+        return self.name
+    
+    def get_add(self):
 
         return self.from_
 

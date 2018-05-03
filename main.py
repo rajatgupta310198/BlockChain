@@ -6,7 +6,7 @@ from datetime import datetime
 import socket
 from src.mine import *
 from src.wallet import *
-
+from hashlib import sha256
 # 100 ask miner if he has blockchain
 # 102 miner respond yes to 100
 # 101 miner responds no to 101
@@ -14,7 +14,7 @@ from src.wallet import *
 data_dir = '/blk'
 
 public_list_of_peers = [
-    ["172.16.123.238", 10009, "active"]
+    ["172.16.102.38", 10009, "active"]
 ]
 connections = []
 connection_miners = []
@@ -44,7 +44,9 @@ def handle_multiple_chains():
 
     
 def main():
+      
     path = os.getcwd()
+    print(path)
     try:
         print('trying to read')
         os.chdir(path + '/blk')
@@ -53,13 +55,28 @@ def main():
             fp.close()
     
     except:
-        print('Creating genesis')
-        chain = Blockchain()
-        os.mkdir('blk')
-        os.chdir(path + '/blk')
-        with open('blkchain.pkl', 'wb') as fp:
-            pickle.dump(chain, fp)
-            fp.close()
+        check = int(input("Are you miner or wallet :"))
+        if check:
+            print('Miner/Wallet started')
+        else:
+
+            print('Creating genesis')
+            number_of_candidates = int(input("Enter number of candidates :"))
+            trs = []
+            for i in range(number_of_candidates):
+                Name = input("Enter name :")
+                age = input("Enter Age :")
+                #usr = User(name=Name, age=age, publickey=sha256(Name.encode() + str(age).encode()).hexdigest(), privatekey=sha256(Name.encode() + str(age).encode()).hexdigest(), candidate=True)
+                ts = Transaction(sha256(Name.encode() + str(age).encode()).hexdigest(), sha256(Name.encode() + str(age).encode()).hexdigest(), 0, name=Name)
+                trs.append(ts)
+
+            chain = Blockchain()
+            chain.initialize_genesis(trs)
+            os.mkdir('blk')
+            os.chdir(path + '/blk')
+            with open('blkchain.pkl', 'wb') as fp:
+                pickle.dump(chain, fp)
+                fp.close()
 
     
 
@@ -85,6 +102,7 @@ def broadcast_new_blockchain(connection_miners, chain):
 def handle_wallet(c, a):
     global list_of_transactions
     print('Receving transaction...')
+    #c.send()
     data = c.recv(102400)
     data = pickle.loads(data)
     print(data)
@@ -137,14 +155,21 @@ def handle_and_distribute(c, a, chain):
                 
 
             elif data.decode() =='wallet':
-                file_to_send = pickle.dumps(public_list_of_peers)
+                print(chain.print_block_chain())
+                file_to_send = pickle.dumps(chain)
                 c.send(file_to_send)
                 isWallet = True
                 #print('Receving transaction...')
                 handle_wallet(c, a)
                 break
 
-
+            elif data.decode() == 'results':
+                print('Result')
+                file_to_send = pickle.dumps(chain)
+                c.send(file_to_send)
+                c.close()
+                connections.remove(c)
+                break
             
             if not data and isWallet == False:
                 connections.remove(c)
@@ -210,7 +235,9 @@ if __name__ =="__main__":
                 print('Listening for peers')
                 c, a = sock.accept()
                 connections.append(c)
+                print(os.getcwd())
                 chain = read_from_local()
+                #chain.print_block_chain()
                 public_list_of_peers.append([a[0], a[1], "Active"])
                 print("Got a peer ", a[0] + ':' + str(a[1]))
                 #print(chain.print_block_chain())
@@ -260,7 +287,12 @@ if __name__ =="__main__":
                                 sock.send('101'.encode())
     
                 else:
+                    try:
+                        os.system("clear")
+                    except:
+                        os.system("cls")
                     print('Receiving peers  updated')
+
                     public_list_of_peers = pickle.loads(data_)
                     print(public_list_of_peers)
                     peersr = False
@@ -281,7 +313,7 @@ if __name__ =="__main__":
                     proof = miner.proof_of_work(blk.get_hash())
                     blk.proof_of_work = proof
                     blk.miner = socket.gethostname()
-                    print(proof)
+                    print('Proof Generated',proof)
                     chain.add_block(blk)
                     sock.send(pickle.dumps(chain))
 
@@ -289,7 +321,41 @@ if __name__ =="__main__":
 
                 
     if sys.argv[1] == 'wallet':
+        
         connectToNetwork(connections)
+
+    if sys.argv[1] == 'results':
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
+        sock.connect((public_list_of_peers[0][0], public_list_of_peers[0][1]))
+        sock.send('results'.encode())
+        data = sock.recv(51200)
+        result_chain = pickle.loads(data)
+        initia_ = result_chain.return_genesis_block()
+        trs = initia_.get_transactions()
+        votes = {
+
+        }
+        candi = []
+        for t in trs:
+            votes[t.get_candidate()] = 0
+            candi.append(t.get_candidate())
+
+        for i,blk in enumerate(result_chain.blocks):
+            ts = blk.get_transactions()
+            if i!=0:
+                for t in ts:
+                    if t.get_candidate() in candi:
+                        votes[t.get_candidate()] +=1
+    
+        try:
+            os.system("clear")
+        except:
+            os.system("cls")
+        print('====== Voting Results =======\n')
+        print(votes)
+
+
 
 # chain = Blockchain()
 # def miner():
