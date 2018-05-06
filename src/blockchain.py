@@ -16,7 +16,6 @@ from .transaction import *
 from .block import Block
 from datetime import datetime
 from hashlib import sha256
-import os
 
 class Blockchain(object):
     '''
@@ -31,7 +30,7 @@ class Blockchain(object):
         Initialize our blockchain
         '''
 
-        self.blocks = []
+        self.blocks = [self.initialize_genesis()]
         self.number_of_blocks = len(self.blocks)
 
 
@@ -54,29 +53,16 @@ class Blockchain(object):
 
 
     #@staticmethod
-    def initialize_genesis(self, trans):
+    def initialize_genesis(self):
         '''
         First time block is added of our blockchain is initialized with genesis block
         '''
         block_ = Block(str(datetime.now()), sha256(str(datetime.now()).encode()).hexdigest())
-        genesis_transcations = trans # Original trancations will be different
+        genesis_transcations = ['A', 'B', 'C', 'D', 'E'] # Original trancations will be different
         block_.add_transactions(genesis_transcations)
         block_.hashblock = block_.get_hashblock()
-        self.blocks.append(block_)
+        return block_
         
-
-    def is_voted(self, trans):
-        print('called')
-        
-        for i,block in enumerate(self.blocks):
-            if i!=0:
-                trans_ = block.get_transactions()
-                for t in trans_:
-                    print(t)
-                    if t.get_who() == trans.get_who():
-                        return True
-        return False
-
 
 
     def lenght_of_chain(self):
@@ -97,26 +83,20 @@ class Blockchain(object):
 
         self.blocks.append(block)
         self.number_of_blocks +=1
-        
         #save chain after this locally and then distribute block
         return
 
 
 
     def print_block_chain(self):
-        
-        try:
-            os.system("clear")
-        except:
-            os.system("cls")
         print('Blochain printing\n')
         for i in range(self.number_of_blocks):
-            print('Block Number : ', i)
-            print('Merkle Root :', self.blocks[i].get_hash())
-            print('Proof of Work :', self.blocks[i].get_proof_of_work())
-            print('Miner of this block : ', self.blocks[i].get_miner())
+            print('Block Number:', i)
+            print(self.blocks[i].get_hash())
+            print('Miner of this block :', self.blocks[i].get_miner())
             l = self.blocks[i].get_transactions()
-            print('Transactions :')
-            for i,t in enumerate(l):
-                print(i,t)
+            print('Transactions :\n')
+            print('To,Digital Signature\n')
+            for t in l:
+                print(t)
         
